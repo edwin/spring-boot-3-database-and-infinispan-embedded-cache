@@ -43,4 +43,12 @@ public class UserController {
                                    @RequestParam String province) {
         return ResponseEntity.ok(userService.saveUser(new User(name, age, address, province)));
     }
+
+    @PutMapping(path = "/user")
+    public ResponseEntity updateUser(@RequestParam String name,
+                                   @RequestParam Integer age,
+                                   @RequestParam String address,
+                                   @RequestParam String province) {
+        return ResponseEntity.ok(userService.updateUser(new User(name, age, address, province)));
+    }
 }

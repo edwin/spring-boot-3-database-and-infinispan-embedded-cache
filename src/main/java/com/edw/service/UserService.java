@@ -48,6 +48,25 @@ public class UserService {
         if (user == null) {
             throw new IllegalArgumentException("User cannot be null");
         }
+
+        if (userRepository.existsById(user.getName())) {
+            throw new IllegalArgumentException("User with name '" + user.getName() + "' already exist");
+        }
+
+        return userRepository.save(user);
+    }
+
+    @Transactional
+    @CachePut(value = "user-cache", key = "#user.name")
+    public User updateUser(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        }
+
+        if (!userRepository.existsById(user.getName())) {
+            throw new IllegalArgumentException("User with name '" + user.getName() + "' does not exist");
+        }
+
         return userRepository.save(user);
     }
 
