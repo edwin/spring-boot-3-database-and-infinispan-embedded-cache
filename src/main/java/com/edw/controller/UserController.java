@@ -51,4 +51,10 @@ public class UserController {
                                    @RequestParam String province) {
         return ResponseEntity.ok(userService.updateUser(new User(name, age, address, province)));
     }
+
+    @DeleteMapping(path = "/user")
+    public ResponseEntity deleteUser(@RequestParam String name) {
+        userService.deleteUser(name);
+        return ResponseEntity.ok().build();
+    }
 }

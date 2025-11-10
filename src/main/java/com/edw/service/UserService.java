@@ -4,6 +4,7 @@ import com.edw.bean.User;
 import com.edw.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -68,6 +69,16 @@ public class UserService {
         }
 
         return userRepository.save(user);
+    }
+
+    @Transactional
+    @CacheEvict(value = "user-cache", key = "#name")
+    public void deleteUser(String name) {
+        if (!userRepository.existsById(name)) {
+            throw new IllegalArgumentException("User with name '" + name + "' does not exist");
+        }
+
+        userRepository.deleteById(name);
     }
 
 }
